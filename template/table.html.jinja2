@@ -1,0 +1,60 @@
+<html>
+<head>	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src="bootstrap-table.js"></script>
+	<title>Table</title>
+
+	<style type="text/css">
+	table {
+		font-size: 14px;
+	}
+	table th{
+		font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+{% for interval in interval_napi_data %}
+<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{interval}}" aria-expanded="true" aria-controls="collapse{{interval}}">
+  <h1>{{interval}}</h1>
+</a>
+<div id="collapse{{interval}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+<table class="table table-striped">
+	<thead>
+		<th>method name</th>
+		{% for i in range(0, count) %}
+		<th>{{experiments_list[i]}}</th>
+		{% endfor %}
+	</thead>
+	{% for method in interval_napi_data[interval] %}
+		<tr>
+			<td>{{method}}</td>
+			{% for i in range(0, count) %}
+				{% for each in interval_napi_data[interval][method][i] %}
+				{% if each == "avg" %}
+				<td>
+				<a type="button" class="" data-toggle="popover" data-placement="auto" title="{{experiments_list[i]}}" data-content="{{interval_napi_data[interval][method][i]}}">{{interval_napi_data[interval][method][i][each] |round }}</div>
+				</a>
+				{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</tr>
+	{% endfor %}
+
+</table>
+</div>
+<br/>
+<br/>
+{% endfor %}
+</body>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover(); 
+});
+$('.collapse').collapse()
+// {% for interval in interval_napi_data %}
+// {% endfor %}
+</script>
+</html>
